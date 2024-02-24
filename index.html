@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunrise and Sunset Widget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #widget {
+            display: inline-block;
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="widget">
+    <h2>Sunrise and Sunset Times (London)</h2>
+    <p id="sunrise"></p>
+    <p id="sunset"></p>
+</div>
+
+<script>
+    // Fetch sunrise and sunset times from the API
+    fetch('https://api.sunrise-sunset.org/json?lat=51.509865&lng=-0.118092&formatted=0')
+        .then(response => response.json())
+        .then(data => {
+            const sunriseTime = new Date(data.results.sunrise);
+            const sunsetTime = new Date(data.results.sunset);
+
+            // Format the time in HH:MM:SS format
+            const formatTime = (time) => {
+                return time.getHours().toString().padStart(2, '0') + ':' +
+                    time.getMinutes().toString().padStart(2, '0') + ':' +
+                    time.getSeconds().toString().padStart(2, '0');
+            };
+
+            // Update the HTML with the sunrise and sunset times
+            document.getElementById('sunrise').innerText = `Sunrise: ${formatTime(sunriseTime)}`;
+            document.getElementById('sunset').innerText = `Sunset: ${formatTime(sunsetTime)}`;
+        })
+        .catch(error => console.error('Error fetching sunrise and sunset data:', error));
+</script>
+
+</body>
+</html>
